@@ -32,9 +32,13 @@ def get(name):
     cursor = connection.cursor()
     command = "select message from snippets where keyword='%s'" % (name)
     cursor.execute(command, (name))
-    snippet = cursor.fetchone()
-
-    return snippet
+    row = cursor.fetchone()
+    connection.commit()
+    if not row:
+        # No snippet with that name
+        print "No snippet with that name."
+    else:    
+        return row[0]
 
 def main():
     """Main function"""
